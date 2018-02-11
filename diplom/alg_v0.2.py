@@ -5,6 +5,15 @@ from pprint import pprint
 
 n = int(input())
 
+# convert vector to int
+def to_int(v):
+    p = 1
+    a = 0
+    for i in v[::-1]:
+        a += p * ((i+1)//2)
+        p *= 2
+    return a
+
 # convert int to vector
 def from_int(a):
     v = []
@@ -23,6 +32,10 @@ def check(a, b):
         c >>= 1
 
     return oc == n // 2
+
+# get next vector
+def next(v):
+    return from_int(to_int(v) + 1)
 
 # generate all vectors
 total = 2 ** n
