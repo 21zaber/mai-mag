@@ -7,8 +7,13 @@
 #include <iostream>
 #include <random>
 #include <limits>
+#include "sys/types.h"
+#include "sys/sysinfo.h"
 
 using namespace std;
+
+struct sysinfo memInfo;
+clock_t tStart;
 
 #define VECTOR long long
 #define VECTOR_COUNTER long long
@@ -117,6 +122,38 @@ bool check(VECTOR a, VECTOR b) {
     return (oc == HALF_LEN);
 } 
 
+int parseLine(char* line){
+    // This assumes that a digit will be found and the line ends in " Kb".
+    int i = strlen(line);
+    const char* p = line;
+    while (*p <'0' || *p > '9') p++;
+    line[i-3] = '\0';
+    i = atoi(p);
+    return i;
+}
+
+int getRAM(){ //Note: this value is in KB!
+    FILE* file = fopen("/proc/self/status", "r");
+    int result = -1;
+    char line[128];
+
+    while (fgets(line, 128, file) != NULL){
+        if (strncmp(line, "VmRSS:", 6) == 0){
+            result = parseLine(line);
+            break;
+        }
+    }
+    fclose(file);
+    return result;
+}
+
+void finish() {
+    print_matrix();
+    printf("Time taken: %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
+
+    printf("RAM used: %d KB\n", getRAM());
+}
+
 
 int main() {
     cin >> MAX_LEN;
@@ -124,7 +161,7 @@ int main() {
     MAX_VECTOR_COUNT = powers[MAX_LEN];
 
     srand(time(NULL));
-    clock_t tStart = clock();
+    tStart = clock();
 
     cout << "Memory allocation: ";
 
@@ -164,7 +201,7 @@ int main() {
         // fail check
         if (step != MAX_LEN-1 && new_p < 1) {
             cout << "Fail on step " << step << endl;
-            printf("Time taken: %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
+            finish();
             return 0;
         }
 
@@ -176,7 +213,6 @@ int main() {
         cout << "Step " << step << ". Current Current size of vector's list - " << p << endl;
     }
 
-    print_matrix();
-    printf("Time taken: %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
+    finish();
     return 0;
 }

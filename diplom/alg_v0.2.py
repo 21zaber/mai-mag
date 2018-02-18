@@ -2,8 +2,15 @@
 from random import choice
 from copy import deepcopy as copy
 from pprint import pprint
+import time
+import os
+import psutil
 
-n = int(input())
+max_ram_usage = 0
+
+def getRAM():
+    process = psutil.Process(os.getpid())
+    return process.memory_info().rss
 
 # convert vector to int
 def to_int(v):
@@ -37,6 +44,11 @@ def check(a, b):
 def next(v):
     return from_int(to_int(v) + 1)
 
+
+n = int(input())
+
+start = time.clock()
+
 # generate all vectors
 total = 2 ** n
 vects = [i for i in range(total)]
@@ -48,6 +60,8 @@ cur_vects = []
 print("Step 0. Current size of vector's list - {}".format(len(vects)))
 
 for step in range(n):
+    max_ram_usage = max(max_ram_usage, getRAM())
+
     if lst_vect is None:
         lst_vect = choice(vects)
         m.append(lst_vect)
@@ -67,9 +81,14 @@ for step in range(n):
     print("Step {}. Current size of vector's list - {}".format(step+1, len(cur_vects)))
     if len(cur_vects) == 0:
         print("Failed to find matrix of a given dimension {}".format(n))
+        print("Time taken: {}".format(time.clock() - start))
+        print("RAM usage: {}".format(max_ram_usage))
         exit(0)
 
 m = [from_int(i) for i in m]
+
+print("Time taken: {}".format(time.clock() - start))
+print("RAM usage: {}".format(max_ram_usage))
 
 pprint(m)
 
