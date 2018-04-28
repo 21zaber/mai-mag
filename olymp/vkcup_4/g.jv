@@ -1,0 +1,38 @@
+import java.util.Scanner;
+
+public class Solution {
+
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        int n = scan.nextInt();
+		:wa
+
+        // Write your code here.
+
+        System.out.println("String: " + s);
+        System.out.println("Double: " + d);
+        System.out.println("Int: " + i);
+    }
+}
+
+n = int(input())
+m = list(map(int, input().split()))
+
+c = 0
+
+for i in m:
+    if i % 2:
+        c += 1
+
+if c < (n/2):
+    print(c)
+    exit()
+
+uc = n - c
+
+ans = 0
+while c > uc:
+    c -=3
+    ans +=1
+
+print(ans+c)
