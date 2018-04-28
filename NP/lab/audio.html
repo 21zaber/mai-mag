@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <meta charset="utf-8">
+        <title>Audio sample site</title>
+    </head>
+    <body>
+		<figure id="audio-container">
+			<audio id="audio"> </audio>
+			<figure id="song-title">
+				<label id="title"></label>
+			</figure>
+			<figure id="container" class='controls'>
+               <button id="playpause" type="button" data-state="play">Play/Pause</button>
+               <button id="stop" type="button" data-state="stop">Stop</button>
+                  <progress id="progress" value="0" min="0">
+                     <span id="progress-bar"></span>
+                  </progress>
+               <button id="mute" type="button" data-state="mute">Mute/Unmute</button>
+               <button id="volinc" type="button" data-state="volup">Vol+</button>
+               <button id="voldec" type="button" data-state="voldown">Vol-</button>
+			</figure>
+			<figure id="song-figure"><nav><ul id="song-list">
+			</ul></nav></figure>
+        </figure>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="scripts.js"></script>
+    </body>
+</html>
