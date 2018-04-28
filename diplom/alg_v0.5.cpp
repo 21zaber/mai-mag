@@ -9,17 +9,20 @@
 #include <limits>
 #include "sys/types.h"
 #include "sys/sysinfo.h"
+#include <omp.h>
+#include <ctime>
 
 using namespace std;
 
 struct sysinfo memInfo;
-clock_t tStart;
+unsigned long long tStart;
 
 #define VECTOR long long
 #define VECTOR_COUNTER long long
 #define LENGTH_COUNTER int
 
-#define MEM_STEP 100000
+#define MEM_STEP 10000
+#define THR_NUM 4
 
 LENGTH_COUNTER MAX_LEN;
 LENGTH_COUNTER HALF_LEN;
@@ -151,7 +154,7 @@ int getRAM(){ //Note: this value is in KB!
 
 void finish() {
     print_matrix();
-    printf("Time taken: %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
+    printf("Time taken: %.2fs\n", (double)(time(0) - tStart));
 
     printf("RAM used: %d KB\n", getRAM());
 }
@@ -160,26 +163,15 @@ void finish() {
 int main() {
     cin >> MAX_LEN;
     HALF_LEN =  (MAX_LEN/2);
-    MAX_VECTOR_COUNT = powers[MAX_LEN];
+    MAX_VECTOR_COUNT = (VECTOR)1 << MAX_LEN;//powers[MAX_LEN];
 
     srand(time(NULL));
-    tStart = clock();
+    tStart = time(0);
 
-    cout << "Memory allocation: ";
-
-    VECTOR *cur_v, *new_v;
     matrix = (VECTOR *) malloc(sizeof(VECTOR) * MAX_LEN);
-    cur_v = (VECTOR *) malloc(sizeof(VECTOR) * MAX_VECTOR_COUNT / 32);
-    new_v = (VECTOR *) malloc(sizeof(VECTOR) * MAX_VECTOR_COUNT / 64);
 
-    if (!cur_v || !new_v || !matrix) {
-        cout << "Failed.\n";
-        return 0;
-    }
-
-    cout << "Done.\n";
-
-    VECTOR_COUNTER p = 0;   
+    omp_lock_t lock;
+    omp_init_lock(&lock);
 
     LENGTH_COUNTER quater_len = MAX_LEN / 4;
     matrix[0] = 0;
@@ -190,41 +182,91 @@ int main() {
 
     VECTOR_COUNTER half_vector_count = MAX_VECTOR_COUNT / 2;
 
-    for (VECTOR_COUNTER i = 0; i < half_vector_count; ++i) 
-        if (check(matrix[0], i) && check(matrix[1], i) && check(matrix[2], i))
-            cur_v[p++] = i;
 
-    cout << "Step 2. Current Current size of vector's list - " << p << endl;
+    VECTOR *buf[THR_NUM];
+    VECTOR_COUNTER p[THR_NUM];
 
-    cout << MAX_VECTOR_COUNT / p << endl;
+    #pragma omp parallel num_threads(THR_NUM)
+    {
+        int tid = omp_get_thread_num();
+
+        VECTOR_COUNTER cur_l = MEM_STEP;
+        buf[tid] = (VECTOR *)malloc(sizeof(VECTOR) * cur_l);
+        p[tid] = 0;
+
+        #pragma omp for schedule(dynamic)
+        for (VECTOR_COUNTER i = 0; i < half_vector_count; ++i) { 
+            if (check(matrix[0], i) && check(matrix[1], i) && check(matrix[2], i))
+                buf[tid][p[tid]++] = i;
+            if (p[tid] >= cur_l) {
+                cur_l += MEM_STEP;
+                buf[tid] = (VECTOR *) realloc(buf[tid], sizeof(VECTOR) * cur_l);
+            }
+        }
+    }
+
+    // merge
+    VECTOR_COUNTER cur_l = 0, mx_l = 0;
+    for (int tid = 0; tid < THR_NUM; ++tid) {
+        cur_l += p[tid];
+        if (p[tid] > mx_l) mx_l = p[tid];
+    }
+
+    VECTOR *cur_v = (VECTOR *) malloc(sizeof(VECTOR) * cur_l);
+    VECTOR_COUNTER tmp = 0;
+    for (int tid = 0; tid < THR_NUM; ++tid) {
+        for (int i = 0; i < p[tid]; ++i) {
+            cur_v[tmp++] = buf[tid][i];
+        }
+    }
+
+    // allign buffers
+    for (int tid = 0; tid < THR_NUM; ++tid) {
+        buf[tid] = (VECTOR *) realloc(buf[tid], sizeof(VECTOR) * mx_l);
+    }
+
+    cout << "Step 2. Current Current size of vector's list - " << cur_l << endl;
 
     for (LENGTH_COUNTER step = 3; step < MAX_LEN; ++step) {
         // choise random vector
-        VECTOR v = cur_v[llrand() % p];
+        VECTOR v = cur_v[llrand() % cur_l];
         matrix[step] = v;
-        VECTOR_COUNTER new_p = 0;
 
         // calc new vectors
-        for (VECTOR_COUNTER i = 0; i < p; ++i){
-            if (check(v, cur_v[i])) {
-                new_v[new_p++] = cur_v[i];    
+        #pragma omp parallel num_threads(4)
+        {
+            int tid = omp_get_thread_num();
+            p[tid] = 0;
+
+            #pragma omp for schedule(dynamic)
+            for (VECTOR_COUNTER i = 0; i < cur_l; ++i){
+                if (check(v, cur_v[i])) {
+                    buf[tid][p[tid]++] = cur_v[i];    
+                }
+            }
+        }
+        // merge
+        cur_l = 0;
+        for (int tid = 0; tid < THR_NUM; ++tid) {
+            cur_l += p[tid];
+        }
+
+        VECTOR_COUNTER tmp = 0;
+        for (int tid = 0; tid < THR_NUM; ++tid) {
+            for (int i = 0; i < p[tid]; ++i) {
+                cur_v[tmp++] = buf[tid][i];
             }
         }
 
         // fail check
-        if (step != MAX_LEN-1 && new_p < 1) {
+        if (step != MAX_LEN-1 && cur_l < 1) {
             cout << "\n\nFail on step " << step << "\n\n";
             finish();
             return 0;
         }
 
         // iteration finish
-        VECTOR *t = cur_v;
-        cur_v = new_v;
-        new_v = t;
-        p = new_p;
-        cout << "Step " << step << ". Current Current size of vector's list - " << p << endl;
-        cout << MAX_VECTOR_COUNT / p << endl;
+        cout << "Step " << step << ". Current Current size of vector's list - " << cur_l << endl;
     }
 
     cout << "\n\nSuccess\n\n";
