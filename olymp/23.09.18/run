@@ -1,0 +1,6 @@
+
+python3 test.py > test
+python3 g.py < test > ans
+
+python3 check.py < ans
+
