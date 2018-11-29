@@ -1,0 +1,73 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+    filetype on
+    filetype plugin on
+    filetype plugin indent on
+
+    colorscheme ron
+
+    set nobackup
+    set noswapfile
+    set showcmd
+    set incsearch
+    set smartcase
+    set hidden
+    set lazyredraw
+    set nocompatible
+    set backspace=indent,eol,start
+    set history=10
+    set ruler
+    set expandtab
+    set shiftwidth=4
+    set softtabstop=4
+    set tabstop=4
+    set foldmethod=syntax
+    set virtualedit=all
+    set formatoptions=tcqrn
+    set wildmenu
+    set shm=aoOAI
+    set hlsearch
+    set number
+    set mousehide
+    set mouse=a
+    set termencoding=utf\PYGZhy{}8
+    set novisualbell
+    set encoding=utf\PYGZhy{}8
+    set fileencodings=utf8,cp1251
+
+    command W w
+    command Q q
+    command Wq wq
+    command WQ wq
+    command Wa wa
+    command WA wa
+    command Wqa wqa
+    command WQa wqa
+    command WQA wqa
+
+    \PYGZsh{} Mappings
+    map Q gq
+    map Y y\PYGZdl{}
+    \PYGZsh{} Save all files
+    map \PYGZlt{}F2\PYGZgt{} \PYGZlt{}Esc\PYGZgt{}:wa\PYGZlt{}CR\PYGZgt{}
+    \PYGZsh{} Save all files and exit
+    map \PYGZlt{}F3\PYGZgt{} \PYGZlt{}Esc\PYGZgt{}:wqa\PYGZlt{}CR\PYGZgt{}
+    \PYGZsh{} Replace template of current word
+    map \PYGZlt{}F4\PYGZgt{} :\PYGZpc{}s/\PYGZbs{}\PYGZlt{}\PYGZlt{}C\PYGZhy{}r\PYGZgt{}=expand(\PYGZdq{}\PYGZlt{}cword\PYGZgt{}\PYGZdq{})\PYGZlt{}cr\PYGZgt{}\PYGZbs{}\PYGZgt{}/
+
+    nmap ,h :tabprev\PYGZlt{}CR\PYGZgt{}
+    nmap ,l :tabnext\PYGZlt{}CR\PYGZgt{}
+    nmap ,j :bnext\PYGZlt{}CR\PYGZgt{}
+    nmap ,k :bprevious\PYGZlt{}CR\PYGZgt{}
+    nmap ,p :set paste!\PYGZlt{}CR\PYGZgt{}
+    nmap ,t :tabnew\PYGZlt{}CR\PYGZgt{}
+    nmap \PYGZlt{}S\PYGZhy{}Tab\PYGZgt{} \PYGZlt{}\PYGZlt{}
+    nmap \PYGZlt{}Tab\PYGZgt{} \PYGZlt{}C\PYGZhy{}W\PYGZgt{}w
+    nmap \PYGZlt{}Backspace\PYGZgt{} \PYGZlt{}Esc\PYGZgt{}hx\PYGZlt{}Ins\PYGZgt{}
+    nmap \PYGZlt{}CR\PYGZgt{} i\PYGZlt{}CR\PYGZgt{}\PYGZlt{}Esc\PYGZgt{}l
+
+    imap \PYGZlt{}S\PYGZhy{}Tab\PYGZgt{} \PYGZlt{}Esc\PYGZgt{}\PYGZlt{}\PYGZlt{}i
+    imap \PYGZlt{}Ins\PYGZgt{} \PYGZlt{}Esc\PYGZgt{}a
+
+    vmap \PYGZlt{}Tab\PYGZgt{} \PYGZgt{}gv
+    vmap \PYGZlt{}S\PYGZhy{}Tab\PYGZgt{} \PYGZlt{}gv
+\end{Verbatim}
