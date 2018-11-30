@@ -668,5 +668,135 @@
     }
 \end{minted}
 
+\section{ Discrete Fourier Transform}
+\begin{otherlanguage*}{russian}
+    Пусть имеется многочлен n-ой степени:
+
+     \[A(x) = a_0 x^0 + a_1 x^1 + \ldots + a_{n-1} x^{n-1}\]
+
+     Не теряя общности, можно считать, что n является степенью 2. Если в действительности n не является степенью 2, то мы просто добавим недостающие коэффициенты, положив их равными нулю.
+
+     Из теории функций комплексного переменного известно, что комплексных корней n-ой степени из единицы существует ровно n. Обозначим эти корни через $w_{n,k}, k = 0 \ldots {n-1}$, тогда известно, что $w_{n,k} = e^{ i \frac{ 2 \pi k }{ n } }$. Кроме того, один из этих корней $w_n = w_{n,1} = e^{ i \frac{ 2 \pi }{ n } }$ (называемый главным значением корня n-ой степени из единицы) таков, что все остальные корни являются его степенями: $w_{n,k} = (w_n)^k$.
+
+     Тогда дискретным преобразованием Фурье (ДПФ) (discrete Fourier transform, DFT) многочлена A(x) (или, что то же самое, ДПФ вектора его коэффициентов $(a_0, a_1, \dots, a_{n-1}))$ называются значения этого многочлена в точках $x = w_{n,k}$, т.е. это вектор:
+
+      \[{\rm DFT}(a_0, a_1, \ldots, a_{n-1}) = (y_0, y_1, ..., y_{n-1}) = (A(w_n^0), A(w_n^1), \ldots, A(w_n^{n-1})). \]
+
+       Аналогично определяется и обратное дискретное преобразование Фурье (InverseDFT). Обратное ДПФ для вектора значений многочлена $(y_0, y_1, \ldots y_{n-1})$ — это вектор коэффициентов многочлена $(a_0, a_1, \ldots, a_{n-1})$:
+
+        \[{\rm InverseDFT}(y_0, y_1, \ldots, y_{n-1}) = (a_0, a_1, ..., a_{n-1}) \]
+
+        Таким образом, если прямое ДПФ переходит от коэффициентов многочлена к его значениям в комплексных корнях n-ой степени из единицы, то обратное ДПФ — наоборот, по значениям многочлена восстанавливает коэффициенты многочлена.
+\end{otherlanguage*}
+\begin{minted}[fontsize=\scriptsize, linenos]{cpp}
+    const int mod = 7340033;
+    const int root = 5;
+    const int root_1 = 4404020;
+    const int root_pw = 1<<20;
+     
+    void fft (vector<int> & a, bool invert) {
+        int n = (int) a.size();
+     
+        for (int i=1, j=0; i<n; ++i) {
+            int bit = n >> 1;
+            for (; j>=bit; bit>>=1)
+                j -= bit;
+            j += bit;
+            if (i < j)
+                swap (a[i], a[j]);
+        }
+     
+        for (int len=2; len<=n; len<<=1) {
+            int wlen = invert ? root_1 : root;
+            for (int i=len; i<root_pw; i<<=1)
+                wlen = int (wlen * 1ll * wlen % mod);
+            for (int i=0; i<n; i+=len) {
+                int w = 1;
+                for (int j=0; j<len/2; ++j) {
+                    int u = a[i+j],  v = int (a[i+j+len/2] * 1ll * w % mod);
+                    a[i+j] = u+v < mod ? u+v : u+v-mod;
+                    a[i+j+len/2] = u-v >= 0 ? u-v : u-v+mod;
+                    w = int (w * 1ll * wlen % mod);
+                }
+            }
+        }
+        if (invert) {
+            int nrev = reverse (n, mod);
+            for (int i=0; i<n; ++i)
+                a[i] = int (a[i] * 1ll * nrev % mod);
+        }
+    }
+
+    void multiply (const vector<int> & a, const vector<int> & b, vector<int> & res) {
+        vector<base> fa (a.begin(), a.end()),  fb (b.begin(), b.end());
+        size_t n = 1;
+        while (n < max (a.size(), b.size()))  n <<= 1;
+        n <<= 1;
+        fa.resize (n),  fb.resize (n);
+     
+        fft (fa, false),  fft (fb, false);
+        for (size_t i=0; i<n; ++i)
+            fa[i] *= fb[i];
+        fft (fa, true);
+     
+        res.resize (n);
+        for (size_t i=0; i<n; ++i)
+            res[i] = int (fa[i].real() + 0.5);
+    }
+\end{minted}
+
+\section{Graph}
+\begin{otherlanguage*}{russian}
+    Алгоритм Диница нахождения максимального потока за  $O (N^2 M)$
+\end{otherlanguage*}
+\begin{minted}[fontsize=\scriptsize, linenos]{cpp}
+    const int MAXN = ...; // число вершин
+    const int INF = 1000000000; // константа-бесконечность
+     
+    int n, c[MAXN][MAXN], f[MAXN][MAXN], s, t, d[MAXN], ptr[MAXN], q[MAXN];
+     
+    bool bfs() {
+        int qh=0, qt=0;
+        q[qt++] = s;
+        memset (d, -1, n * sizeof d[0]);
+        d[s] = 0;
+        while (qh < qt) {
+            int v = q[qh++];
+            for (int to=0; to<n; ++to)
+                if (d[to] == -1 && f[v][to] < c[v][to]) {
+                    q[qt++] = to;
+                    d[to] = d[v] + 1;
+                }
+        }
+        return d[t] != -1;
+    }
+     
+    int dfs (int v, int flow) {
+        if (!flow)  return 0;
+        if (v == t)  return flow;
+        for (int & to=ptr[v]; to<n; ++to) {
+            if (d[to] != d[v] + 1)  continue;
+            int pushed = dfs (to, min (flow, c[v][to] - f[v][to]));
+            if (pushed) {
+                f[v][to] += pushed;
+                f[to][v] -= pushed;
+                return pushed;
+            }
+        }
+        return 0;
+    }
+     
+    int dinic() {
+        int flow = 0;
+        for (;;) {
+            if (!bfs())  break;
+            memset (ptr, 0, n * sizeof ptr[0]);
+            while (int pushed = dfs (s, INF))
+                flow += pushed;
+        }
+        return flow;
+    }
+\end{minted}
+
 
 \end{document}

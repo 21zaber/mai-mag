@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=latex 2018.11.28)  29 NOV 2018 20:06
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=latex 2018.11.28)  30 NOV 2018 18:03
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -918,32 +918,53 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
 
 (./_minted-trd/9D4CCE23A60740655BA8966746FAFB637352542BC0A2A58EED3FEFA057BA505F
-.pygtex [8] [9]) 
+.pygtex [8] [9])
+\openout3 = `trd.pyg'.
+
+
+(./_minted-trd/11ADB7A29BC695B6335E6F864EE0F2617352542BC0A2A58EED3FEFA057BA505F
+.pygtex [10])
+\openout3 = `trd.pyg'.
+
+runsystem(pygmentize -l cpp -f latex -P commandprefix=PYG -F tokenmerge -o "_mi
+nted-trd/66B27CB2C82EAA94FAD4FB3D252DBB8F7352542BC0A2A58EED3FEFA057BA505F.pygte
+x" "trd.pyg" )...executed.
+
+
+(./_minted-trd/66B27CB2C82EAA94FAD4FB3D252DBB8F7352542BC0A2A58EED3FEFA057BA505F
+.pygtex) 
 AED: lastpage setting LastPage
-[10]
+[11]
+runsystem(rm "_minted-trd/D41D8CD98F00B204E9800998ECF8427E7352542BC0A2A58EED3FE
+FA057BA505F.pygtex")...executed.
+
 runsystem(rm "trd.pyg")...executed.
 
  (./trd.aux) ) 
 Here is how much of TeX's memory you used:
- 6313 strings out of 493030
- 97523 string characters out of 6136259
- 217191 words of memory out of 5000000
- 9712 multiletter control sequences out of 15000+600000
+ 6322 strings out of 493030
+ 98221 string characters out of 6136259
+ 217337 words of memory out of 5000000
+ 9714 multiletter control sequences out of 15000+600000
  9368 words of font info for 23 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  37i,13n,43p,1570b,473s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t2a.enc}</usr
 /share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share
-/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texliv
-e/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf/fonts/
-type1/public/cm-super/sfbx1440.pfb></usr/share/texmf/fonts/type1/public/cm-supe
-r/sfit0800.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm0500.pfb></usr
-/share/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf/fonts/t
-ype1/public/cm-super/sftt0800.pfb>
-Output written on trd.pdf (10 pages, 205231 bytes).
+/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmsy7.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1440.pfb></
+usr/share/texmf/fonts/type1/public/cm-super/sfit0800.pfb></usr/share/texmf/font
+s/type1/public/cm-super/sfrm0500.pfb></usr/share/texmf/fonts/type1/public/cm-su
+per/sfrm1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt0800.pfb>
+Output written on trd.pdf (11 pages, 254735 bytes).
 PDF statistics:
- 70 PDF objects out of 1000 (max. 8388607)
- 49 compressed objects within 1 object stream
+ 93 PDF objects out of 1000 (max. 8388607)
+ 66 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

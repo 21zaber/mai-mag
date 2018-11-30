@@ -1,0 +1,48 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{MAXN} \PYG{o}{=} \PYG{p}{...;} \PYG{c+c1}{// число вершин}
+    \PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{INF} \PYG{o}{=} \PYG{l+m+mi}{1000000000}\PYG{p}{;} \PYG{c+c1}{// константа\PYGZhy{}бесконечность}
+
+    \PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{,} \PYG{n}{c}\PYG{p}{[}\PYG{n}{MAXN}\PYG{p}{][}\PYG{n}{MAXN}\PYG{p}{],} \PYG{n}{f}\PYG{p}{[}\PYG{n}{MAXN}\PYG{p}{][}\PYG{n}{MAXN}\PYG{p}{],} \PYG{n}{s}\PYG{p}{,} \PYG{n}{t}\PYG{p}{,} \PYG{n}{d}\PYG{p}{[}\PYG{n}{MAXN}\PYG{p}{],} \PYG{n}{ptr}\PYG{p}{[}\PYG{n}{MAXN}\PYG{p}{],} \PYG{n}{q}\PYG{p}{[}\PYG{n}{MAXN}\PYG{p}{];}
+
+    \PYG{k+kt}{bool} \PYG{n+nf}{bfs}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{qh}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{qt}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{n}{q}\PYG{p}{[}\PYG{n}{qt}\PYG{o}{++}\PYG{p}{]} \PYG{o}{=} \PYG{n}{s}\PYG{p}{;}
+        \PYG{n}{memset} \PYG{p}{(}\PYG{n}{d}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{n} \PYG{o}{*} \PYG{k}{sizeof} \PYG{n}{d}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]);}
+        \PYG{n}{d}\PYG{p}{[}\PYG{n}{s}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{k}{while} \PYG{p}{(}\PYG{n}{qh} \PYG{o}{\PYGZlt{}} \PYG{n}{qt}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k+kt}{int} \PYG{n}{v} \PYG{o}{=} \PYG{n}{q}\PYG{p}{[}\PYG{n}{qh}\PYG{o}{++}\PYG{p}{];}
+            \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{to}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{to}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;} \PYG{o}{++}\PYG{n}{to}\PYG{p}{)}
+                \PYG{k}{if} \PYG{p}{(}\PYG{n}{d}\PYG{p}{[}\PYG{n}{to}\PYG{p}{]} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{f}\PYG{p}{[}\PYG{n}{v}\PYG{p}{][}\PYG{n}{to}\PYG{p}{]} \PYG{o}{\PYGZlt{}} \PYG{n}{c}\PYG{p}{[}\PYG{n}{v}\PYG{p}{][}\PYG{n}{to}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{q}\PYG{p}{[}\PYG{n}{qt}\PYG{o}{++}\PYG{p}{]} \PYG{o}{=} \PYG{n}{to}\PYG{p}{;}
+                    \PYG{n}{d}\PYG{p}{[}\PYG{n}{to}\PYG{p}{]} \PYG{o}{=} \PYG{n}{d}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{;}
+                \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{n}{d}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kt}{int} \PYG{n+nf}{dfs} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{v}\PYG{p}{,} \PYG{k+kt}{int} \PYG{n}{flow}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{o}{!}\PYG{n}{flow}\PYG{p}{)}  \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{v} \PYG{o}{==} \PYG{n}{t}\PYG{p}{)}  \PYG{k}{return} \PYG{n}{flow}\PYG{p}{;}
+        \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{o}{\PYGZam{}} \PYG{n}{to}\PYG{o}{=}\PYG{n}{ptr}\PYG{p}{[}\PYG{n}{v}\PYG{p}{];} \PYG{n}{to}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;} \PYG{o}{++}\PYG{n}{to}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k}{if} \PYG{p}{(}\PYG{n}{d}\PYG{p}{[}\PYG{n}{to}\PYG{p}{]} \PYG{o}{!=} \PYG{n}{d}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{)}  \PYG{k}{continue}\PYG{p}{;}
+            \PYG{k+kt}{int} \PYG{n}{pushed} \PYG{o}{=} \PYG{n}{dfs} \PYG{p}{(}\PYG{n}{to}\PYG{p}{,} \PYG{n}{min} \PYG{p}{(}\PYG{n}{flow}\PYG{p}{,} \PYG{n}{c}\PYG{p}{[}\PYG{n}{v}\PYG{p}{][}\PYG{n}{to}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{f}\PYG{p}{[}\PYG{n}{v}\PYG{p}{][}\PYG{n}{to}\PYG{p}{]));}
+            \PYG{k}{if} \PYG{p}{(}\PYG{n}{pushed}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                \PYG{n}{f}\PYG{p}{[}\PYG{n}{v}\PYG{p}{][}\PYG{n}{to}\PYG{p}{]} \PYG{o}{+=} \PYG{n}{pushed}\PYG{p}{;}
+                \PYG{n}{f}\PYG{p}{[}\PYG{n}{to}\PYG{p}{][}\PYG{n}{v}\PYG{p}{]} \PYG{o}{\PYGZhy{}=} \PYG{n}{pushed}\PYG{p}{;}
+                \PYG{k}{return} \PYG{n}{pushed}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kt}{int} \PYG{n+nf}{dinic}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{flow} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{k}{for} \PYG{p}{(;;)} \PYG{p}{\PYGZob{}}
+            \PYG{k}{if} \PYG{p}{(}\PYG{o}{!}\PYG{n}{bfs}\PYG{p}{())}  \PYG{k}{break}\PYG{p}{;}
+            \PYG{n}{memset} \PYG{p}{(}\PYG{n}{ptr}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{n} \PYG{o}{*} \PYG{k}{sizeof} \PYG{n}{ptr}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]);}
+            \PYG{k}{while} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{pushed} \PYG{o}{=} \PYG{n}{dfs} \PYG{p}{(}\PYG{n}{s}\PYG{p}{,} \PYG{n}{INF}\PYG{p}{))}
+                \PYG{n}{flow} \PYG{o}{+=} \PYG{n}{pushed}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{n}{flow}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\end{Verbatim}
