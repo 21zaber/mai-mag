@@ -1,0 +1,24 @@
+n.zabarin@st56:/home/n.zabarin/mpi/lab01$ make &&  make run4 && make run8 && make run16
+g++ main.cpp -o main
+mpic++ lab01.cpp -o lab
+mpirun -n 4 -q ./lab 
+Size: 4
+Solving heat conduction task on 4098 by 4098 grid
+allocation+initialization finished for: 0.073850
+calculation finished for: 55.508240
+md5sum output
+fc8839a5b9417daf7db506297a9cd4ba  output
+mpirun -n 8 -q ./lab
+Size: 8
+Solving heat conduction task on 4098 by 4098 grid
+allocation+initialization finished for: 0.028901
+calculation finished for: 22.102171
+md5sum output
+fc8839a5b9417daf7db506297a9cd4ba  output
+mpirun -n 16 -q ./lab
+Size: 16
+Solving heat conduction task on 4098 by 4098 grid
+allocation+initialization finished for: 0.036789
+calculation finished for: 24.091139
+md5sum output
+fc8839a5b9417daf7db506297a9cd4ba  output

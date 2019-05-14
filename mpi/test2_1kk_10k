@@ -1,0 +1,34 @@
+n.zabarin@st56:/home/n.zabarin/mpi$ make lab2 && make run && make run4 && make run8 && make run16
+g++ main2.cpp -o main
+mpic++ lab02.cpp -o lab
+./main
+Solving heat conduction task on 1026 by 1026 grid
+precision achieved 0.000100
+calculation finished for: 67.000000 with 3601 iterations
+md5sum output
+7040b53acb5b85fd2d2ce79998e65434  output
+mpirun -n 4 -q ./lab 
+Size: 4
+Solving heat conduction task on 1026 by 1026 grid
+allocation+initialization finished for: 0.003665
+precision achieved 0.000100
+calculation finished for: 17.924640 with 3601 iterations
+md5sum output
+7040b53acb5b85fd2d2ce79998e65434  output
+mpirun -n 8 -q ./lab
+Size: 8
+Solving heat conduction task on 1026 by 1026 grid
+allocation+initialization finished for: 0.001855
+precision achieved 0.000100
+calculation finished for: 9.910617 with 3601 iterations
+md5sum output
+7040b53acb5b85fd2d2ce79998e65434  output
+mpirun -n 16 -q ./lab
+Size: 16
+Solving heat conduction task on 1026 by 1026 grid
+allocation+initialization finished for: 0.001370
+precision achieved 0.000100
+calculation finished for: 11.652429 with 3601 iterations
+md5sum output
+7040b53acb5b85fd2d2ce79998e65434  output
+
