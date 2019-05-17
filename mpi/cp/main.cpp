@@ -234,24 +234,21 @@ int main(int argc, char **argv) {
 
         for (int i = 1; i < rs-1; ++i) {
             for (int j = 1; j < len[i]-1; ++j) {
+                int q = 2;
                 pnew[i][j] = pold[i][j-1] + pold[i][j+1];
 
-              //if (j) {
-              //    pnew[i][j] += pold[i][j-1];
-              //}
-              //if (j < len[i]-1) {
-              //    pnew[i][j] += pold[i][j+1];
-              //}
                 int t = j+offset[i]-offset[i-1];
                 if (t >= 0 && t < len[i-1]) {
                     pnew[i][j] += pold[i-1][t];
+                    q++;
                 }
                 t = j+offset[i]-offset[i+1];
                 if (t >= 0 && t < len[i+1]) {
                     pnew[i][j] += pold[i+1][t];
+                    q++;
                 }
 
-                pnew[i][j] *= 0.25;
+                pnew[i][j] /= q;
                 lerr = std::max(lerr, (float)fabs(pnew[i][j]-pold[i][j]));
             }
         }

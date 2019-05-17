@@ -1,0 +1,13 @@
+send from 3 to 2, len 30
+recv who 3 from 2, len 29
+Proc #1, total strings: 9
+send from 1 to 0, len 17
+recv who 1 from 0, len 16
+send from 1 to 2, len 23
+recv who 1 from 2, len 24
+send from 0 to 1, len 16
+recv who 0 from 1, len 17
+send from 2 to 1, len 24
+recv who 2 from 1, len 23
+send from 2 to 3, len 29
+recv who 2 from 3, len 30
