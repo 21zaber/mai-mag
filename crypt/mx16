@@ -1,0 +1,42 @@
+Memory allocation: Done.
+Step 0. Current Current size of vector's list - 165636900
+Step 1. Current Current size of vector's list - 9643410
+Step 2. Current Current size of vector's list - 426888
+Step 3. Current Current size of vector's list - 19500
+Step 4. Current Current size of vector's list - 820
+Step 5. Current Current size of vector's list - 50
+Step 6. Current Current size of vector's list - 14
+Step 7. Current Current size of vector's list - 14
+Step 8. Current Current size of vector's list - 12
+Step 9. Current Current size of vector's list - 12
+Step 10. Current Current size of vector's list - 12
+Step 11. Current Current size of vector's list - 12
+Step 12. Current Current size of vector's list - 12
+Step 13. Current Current size of vector's list - 12
+Step 14. Current Current size of vector's list - 12
+Step 15. Current Current size of vector's list - 12
+
+
+Success
+
+{
+{ 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 },
+{ i , 1 ,-i , i ,-1 ,-i ,-i , 1 ,-i , i , i ,-1 , 1 , i ,-1 ,-i },
+{ i , i , 1 ,-1 ,-i ,-1 , i , 1 ,-i ,-1 ,-i , 1 ,-1 , 1 ,-1 , 1 },
+{-i ,-i , i , 1 , i ,-1 , 1 ,-i , i , 1 , 1 ,-i ,-1 ,-1 ,-1 , i },
+{ 1 , i, -i ,-i , i , i ,-1 ,-1 , 1 , 1 ,-1 ,-i ,-i , i ,-1 , 1 },
+{ 1 ,-1 , i ,-1 ,-i , i , 1 ,-i ,-1 , 1 , i ,-1 ,-i , 1 , i ,-i },
+{ i ,-i ,-i , i , i , i ,-i , i , i ,-i , i ,-i ,-i , i ,-i ,-i },
+{ i ,-i , i ,-i ,-i , i , i ,-i , i ,-i , i , i , i ,-i ,-i ,-i },
+{ i , i , i , i , i , i ,-i ,-i ,-i ,-i , i ,-i ,-i , i ,-i ,-i },
+{ i ,-i ,-i , i , i , i ,-i , i , i ,-i , i ,-i ,-i , i ,-i ,-i },
+{-i , i , i ,-i ,-i ,-i , i ,-i ,-i , i ,-i , i , i ,-i , i , i },
+{-i ,-i , i ,-i ,-i , i ,-i , i , i , i , i ,-i ,-i ,-i , i , i },
+{ i , i ,-i , i ,-i ,-i ,-i , i ,-i , i ,-i , i ,-i , i , i ,-i },
+{-i ,-i ,-i ,-i , i , i ,-i , i ,-i , i , i , i , i ,-i ,-i , i },
+{-i ,-i , i ,-i , i , i , i ,-i , i ,-i , i ,-i , i ,-i ,-i , i },
+{ i , i , i , i , i , i ,-i ,-i ,-i ,-i , i ,-i ,-i , i ,-i ,-i }
+}
+Time taken: 461.24s
+RAM used: 1372104 KB
+
