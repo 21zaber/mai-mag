@@ -23,7 +23,7 @@ clock_t tStart;
 
 LENGTH_COUNTER MAX_LEN;
 LENGTH_COUNTER HALF_LEN;
-VECTOR_COUNTER MAX_VECTOR_COUNT;
+VECTOR_COUNTER MAX_VECTOR_COUNT, VC;
 
 const VECTOR powers[56] = {
     1,
@@ -101,12 +101,12 @@ VECTOR *matrix;
 void print_vector(VECTOR v) {
     VECTOR t = v;
     for (int i = 0; i < MAX_LEN; ++i) {
-        if (v % 2 == 0){
+        if (t % 2 == 0){
             printf(" 1 "); 
         } else {
             printf("-1 ");
         }
-        v = v / 2;
+        t /= 2;
     }
     printf("\n");
 }
@@ -154,80 +154,92 @@ void finish() {
     printf("Time taken: %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
 
     printf("RAM used: %d KB\n", getRAM());
+
+  //printf("\n");
+  //for (int i = 0; i < MAX_LEN; ++i) {
+  //    printf("%d\n", matrix[i]);
+  //}
+  //printf("\n");
+  //printf("\n");
+}
+
+VECTOR get_prefix(VECTOR_COUNTER i) {
+    VECTOR v = 0;
+    for (int j = 0; j < i; ++ j) {
+        if (matrix[j] & powers[i]) {
+            v += powers[j];
+        }
+    }
+
+    return v;
 }
 
 
+
 int main() {
-    cin >> MAX_LEN;
+    cin >> MAX_LEN >> VC;
     HALF_LEN =  (MAX_LEN/2);
     MAX_VECTOR_COUNT = powers[MAX_LEN];
 
     srand(time(NULL));
     tStart = clock();
 
-    cout << "Memory allocation: ";
+    //cout << "Memory allocation: ";
 
-    VECTOR *cur_v, *new_v;
     matrix = (VECTOR *) malloc(sizeof(VECTOR) * MAX_LEN);
-    cur_v = (VECTOR *) malloc(sizeof(VECTOR) * MAX_VECTOR_COUNT / 32);
-    new_v = (VECTOR *) malloc(sizeof(VECTOR) * MAX_VECTOR_COUNT / 64);
 
-    if (!cur_v || !new_v || !matrix) {
-        cout << "Failed.\n";
-        return 0;
+    if (!matrix) {
+        //cout << "Failed.\n";
+        return 255;
     }
 
-    cout << "Done.\n";
-
-    VECTOR_COUNTER p = 0;   
+    //cout << "Done.\n";
 
     LENGTH_COUNTER quater_len = MAX_LEN / 4;
     matrix[0] = 0;
-    matrix[1] = ((VECTOR_COUNTER)1 << (MAX_LEN / 2)) - 1;
-    matrix[2] =  ((VECTOR_COUNTER)1 << (quater_len * 3)) - 1;
-    matrix[2] -= ((VECTOR_COUNTER)1 << (quater_len * 2)) - 1; 
-    matrix[2] += ((VECTOR_COUNTER)1 << (quater_len * 1)) - 1; 
+
+    LENGTH_COUNTER step = 1, cur_part = 2;
+
 
     VECTOR_COUNTER half_vector_count = MAX_VECTOR_COUNT / 2;
 
-    for (VECTOR_COUNTER i = 0; i < half_vector_count; ++i) 
-        if (check(matrix[0], i) && check(matrix[1], i) && check(matrix[2], i))
-            cur_v[p++] = i;
+    VECTOR pr;
+    bool flag;
 
-    cout << "Step 2. Current Current size of vector's list - " << p << endl;
+    for (; step < MAX_LEN; ++step) {
+        pr = get_prefix(step);
+        VECTOR_COUNTER i = 0;
 
-    cout << MAX_VECTOR_COUNT / p << endl;
+        for (; i < VC; ++i) {
+            VECTOR v;
+            if (step < HALF_LEN) {
+                v = llrand() % powers[MAX_LEN - step];
+                v = v << step;
+                v += pr;
+            } else {
+                v = llrand() % MAX_VECTOR_COUNT;
+            }
 
-    for (LENGTH_COUNTER step = 3; step < MAX_LEN; ++step) {
-        // choise random vector
-        VECTOR v = cur_v[llrand() % p];
-        matrix[step] = v;
-        VECTOR_COUNTER new_p = 0;
+            flag = 1;
 
-        // calc new vectors
-        for (VECTOR_COUNTER i = 0; i < p; ++i){
-            if (check(v, cur_v[i])) {
-                new_v[new_p++] = cur_v[i];    
+            for (int j = 0; j < step; ++j) {
+                flag &= check(matrix[j], v);
+            }
+
+            if (flag) {
+                matrix[step] = v;
+                break;
             }
         }
-
-        // fail check
-        if (step != MAX_LEN-1 && new_p < 1) {
-            cout << "\n\nFail on step " << step << "\n\n";
+        cout << "Step " << step << " finished with " << i+1 << " random vectors.\n";
+        if (!matrix[step]) {
+            cout << "Fail on step " << step << "\n";
             finish();
             return 0;
+            break;
         }
-
-        // iteration finish
-        VECTOR *t = cur_v;
-        cur_v = new_v;
-        new_v = t;
-        p = new_p;
-        cout << "Step " << step << ". Current size of vector's list - " << p << endl;
     }
 
-    cout << "\n\nSuccess\n\n";
-
     finish();
-    return 0;
+    return 1;
 }

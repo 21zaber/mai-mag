@@ -23,7 +23,7 @@ clock_t tStart;
 
 LENGTH_COUNTER MAX_LEN;
 LENGTH_COUNTER HALF_LEN;
-VECTOR_COUNTER MAX_VECTOR_COUNT;
+VECTOR_COUNTER MAX_VECTOR_COUNT, VC;
 
 const VECTOR powers[56] = {
     1,
@@ -101,12 +101,12 @@ VECTOR *matrix;
 void print_vector(VECTOR v) {
     VECTOR t = v;
     for (int i = 0; i < MAX_LEN; ++i) {
-        if (v % 2 == 0){
+        if (t % 2 == 0){
             printf(" 1 "); 
         } else {
             printf("-1 ");
         }
-        v = v / 2;
+        t /= 2;
     }
     printf("\n");
 }
@@ -158,7 +158,7 @@ void finish() {
 
 
 int main() {
-    cin >> MAX_LEN;
+    cin >> MAX_LEN >> VC;
     HALF_LEN =  (MAX_LEN/2);
     MAX_VECTOR_COUNT = powers[MAX_LEN];
 
@@ -169,8 +169,8 @@ int main() {
 
     VECTOR *cur_v, *new_v;
     matrix = (VECTOR *) malloc(sizeof(VECTOR) * MAX_LEN);
-    cur_v = (VECTOR *) malloc(sizeof(VECTOR) * MAX_VECTOR_COUNT / 32);
-    new_v = (VECTOR *) malloc(sizeof(VECTOR) * MAX_VECTOR_COUNT / 64);
+    cur_v = (VECTOR *) malloc(sizeof(VECTOR) * VC);
+    new_v = (VECTOR *) malloc(sizeof(VECTOR) * VC);
 
     if (!cur_v || !new_v || !matrix) {
         cout << "Failed.\n";
@@ -190,9 +190,13 @@ int main() {
 
     VECTOR_COUNTER half_vector_count = MAX_VECTOR_COUNT / 2;
 
-    for (VECTOR_COUNTER i = 0; i < half_vector_count; ++i) 
-        if (check(matrix[0], i) && check(matrix[1], i) && check(matrix[2], i))
-            cur_v[p++] = i;
+    cout << "Generate vetor list of size " << VC << endl;
+
+    for (VECTOR_COUNTER i = 0; p < VC && i < half_vector_count; ++i) {
+        VECTOR v = llrand() % half_vector_count;
+        if (check(matrix[0], v) && check(matrix[1], v) && check(matrix[2], v))
+            cur_v[p++] = v;
+    }
 
     cout << "Step 2. Current Current size of vector's list - " << p << endl;
 
@@ -223,7 +227,25 @@ int main() {
         cur_v = new_v;
         new_v = t;
         p = new_p;
-        cout << "Step " << step << ". Current size of vector's list - " << p << endl;
+
+        if (p < 100) {
+            cout << "Too low number of vectors in current list, generate more" << endl;
+            for (VECTOR_COUNTER i = 0; p < 100 && i < VC; ++i) {
+                VECTOR v = llrand() % half_vector_count;
+                bool f = true;
+                for (VECTOR_COUNTER j = 0; j <= step; ++j) {
+                    if (!check(matrix[j], v)) {
+                        f = false;
+                        break;
+                    }
+                }
+                if (f)
+                    cur_v[p++] = v;
+            }
+        }
+
+        cout << "Step " << step << ". Current Current size of vector's list - " << p << endl;
+        cout << MAX_VECTOR_COUNT / p << endl;
     }
 
     cout << "\n\nSuccess\n\n";
